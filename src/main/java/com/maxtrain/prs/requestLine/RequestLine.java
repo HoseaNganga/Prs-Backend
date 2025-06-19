@@ -15,11 +15,11 @@ public class RequestLine {
 	@Column(columnDefinition = "int default 1")
 	private int quantity;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "productId", nullable = false)
 	private Product product;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "requestId", nullable = false)
 	private Request request;
 		

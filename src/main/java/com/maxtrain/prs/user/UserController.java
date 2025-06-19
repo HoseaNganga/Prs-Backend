@@ -3,16 +3,18 @@ package com.maxtrain.prs.user;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@GetMapping()
 	public @ResponseBody Iterable<User> GetAll() {
 		return userRepository.findAll();
@@ -64,5 +66,27 @@ public class UserController {
 			throw new Exception("User not found.");
 		}
 		Delete(user.get());
+	}
+
+	@PostMapping("/login")
+	public @ResponseBody ResponseEntity<?> login(@RequestBody User incomingUser) {
+		if (incomingUser.getUsername() == null || incomingUser.getPassword() == null) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("Username and password are required.");
+		}
+
+		User user = userRepository.findByUsernameAndPassword(
+				incomingUser.getUsername(),
+				incomingUser.getPassword()
+		);
+
+		if (user == null) {
+			return ResponseEntity
+					.status(HttpStatus.UNAUTHORIZED)
+					.body("Invalid username or password.");
+		}
+
+		return ResponseEntity.ok(user);
 	}
 }
