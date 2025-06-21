@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import com.maxtrain.prs.user.User;
 
+
 @Entity
 public class Request {
 
@@ -39,6 +40,8 @@ public class Request {
 	@JoinColumn(name = "userId", nullable = false)
 	private User user;
 
+
+
 	// Getters and Setters below...
 
 	public int getId() { return id; }
@@ -70,4 +73,6 @@ public class Request {
 
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
+
+
 }
